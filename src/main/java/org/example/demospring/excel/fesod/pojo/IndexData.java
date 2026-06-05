@@ -1,4 +1,4 @@
-package org.example.demospring.excel.fesod;
+package org.example.demospring.excel.fesod.pojo;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

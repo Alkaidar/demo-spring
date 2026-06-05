@@ -5,7 +5,8 @@ import org.apache.fesod.sheet.ExcelWriter;
 import org.apache.fesod.sheet.FesodSheet;
 import org.apache.fesod.sheet.write.metadata.WriteSheet;
 import org.apache.fesod.sheet.write.metadata.WriteTable;
-import org.example.demospring.excel.fesod.DemoData;
+import org.example.demospring.excel.fesod.CustomStringStringConverter;
+import org.example.demospring.excel.fesod.pojo.DemoData;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -87,6 +88,17 @@ class DemoSpringApplicationTests {
             excelWriter.write(data(), writeSheet, table0);
             excelWriter.write(data(), writeSheet, table1);
         }
+    }
+
+    // TODO 没有生效，不知道是不是Fesod的bug
+    @Test
+    public void globalConverterWrite() {
+        String fileName = "globalConverterWrite" + System.currentTimeMillis() + ".xlsx";
+
+        FesodSheet.write(fileName, DemoData.class)
+                .registerConverter(new CustomStringStringConverter())
+                .sheet()
+                .doWrite(data());
     }
 
 }
