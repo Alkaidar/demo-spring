@@ -3,8 +3,10 @@ package org.example.demospring;
 import org.apache.fesod.common.util.ListUtils;
 import org.apache.fesod.sheet.ExcelWriter;
 import org.apache.fesod.sheet.FesodSheet;
+import org.apache.fesod.sheet.write.merge.LoopMergeStrategy;
 import org.apache.fesod.sheet.write.metadata.WriteSheet;
 import org.apache.fesod.sheet.write.metadata.WriteTable;
+import org.example.demospring.excel.fesod.CustomMergeStrategy;
 import org.example.demospring.excel.fesod.CustomStringStringConverter;
 import org.example.demospring.excel.fesod.pojo.DemoData;
 import org.junit.jupiter.api.Test;
@@ -97,6 +99,27 @@ class DemoSpringApplicationTests {
 
         FesodSheet.write(fileName, DemoData.class)
                 .registerConverter(new CustomStringStringConverter())
+                .sheet()
+                .doWrite(data());
+    }
+
+    @Test
+    public void strategyMergeWrite() {
+        String fileName = "strategyMergeWrite" + System.currentTimeMillis() + ".xlsx";
+
+        // 合并第 0 列中每 2 行
+        LoopMergeStrategy strategy = new LoopMergeStrategy(2, 0);
+        FesodSheet.write(fileName, DemoData.class)
+                .registerWriteHandler(strategy)
+                .sheet()
+                .doWrite(data());
+    }
+
+    @Test
+    public void customMergeWrite() {
+        String fileName = "customMergeWrite" + System.currentTimeMillis() + ".xlsx";
+        FesodSheet.write(fileName, DemoData.class)
+                .registerWriteHandler(new CustomMergeStrategy())
                 .sheet()
                 .doWrite(data());
     }
