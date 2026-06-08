@@ -6,6 +6,7 @@ import org.apache.fesod.sheet.FesodSheet;
 import org.apache.fesod.sheet.enums.WriteDirectionEnum;
 import org.apache.fesod.sheet.write.metadata.WriteSheet;
 import org.apache.fesod.sheet.write.metadata.fill.FillConfig;
+import org.apache.fesod.sheet.write.metadata.fill.FillWrapper;
 import org.example.demospring.excel.fesod.pojo.FillData;
 import org.example.demospring.excel.fesod.pojo.TemplateData;
 import org.junit.jupiter.api.Test;
@@ -187,6 +188,31 @@ class FillTests {
             map.put("date", new Date());
             writer.fill(map, writeSheet);
 
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Test
+    public void compositeFill() {
+        String templateFilePath = "template/compositeTemplate.xlsx";
+
+        try (ExcelWriter writer = FesodSheet.write("compositeFill.xlsx")
+                .withTemplate(getTemplateInputStream(templateFilePath))
+                .build()) {
+            WriteSheet writeSheet = FesodSheet.writerSheet().build();
+
+            FillConfig config = FillConfig.builder().direction(WriteDirectionEnum.HORIZONTAL).build();
+
+            // 使用 FillWrapper 进行多列表填充
+            writer.fill(new FillWrapper("data1", data()), config, writeSheet);
+            writer.fill(new FillWrapper("data2", data()), writeSheet);
+            writer.fill(new FillWrapper("data3", data()), writeSheet);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", new Date());
+            writer.fill(map, writeSheet);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
