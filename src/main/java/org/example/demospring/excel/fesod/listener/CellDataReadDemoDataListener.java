@@ -1,10 +1,10 @@
-package org.example.demospring.excel.fesod;
+package org.example.demospring.excel.fesod.listener;
 
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.fesod.sheet.context.AnalysisContext;
 import org.apache.fesod.sheet.read.listener.ReadListener;
-import org.example.demospring.excel.fesod.pojo.IndexOrNameData;
+import org.example.demospring.excel.fesod.pojo.CellDataReadDemoData;
 
 /**
  * @ClassName DemoDataListener
@@ -13,10 +13,10 @@ import org.example.demospring.excel.fesod.pojo.IndexOrNameData;
  * @Date 2026/6/8 11:17
  */
 @Slf4j
-public class IndexOrNameDataListener implements ReadListener<IndexOrNameData> {
+public class CellDataReadDemoDataListener implements ReadListener<CellDataReadDemoData> {
     @Override
-    public void invoke(IndexOrNameData indexOrNameData, AnalysisContext analysisContext) {
-        log.info("读取到一条数据: {}", JSON.toJSONString(indexOrNameData));
+    public void invoke(CellDataReadDemoData cellDataReadDemoData, AnalysisContext analysisContext) {
+        log.info("读取到一条数据: {}", JSON.toJSONString(cellDataReadDemoData));
     }
 
     @Override
