@@ -1,8 +1,6 @@
 package org.example.demospring.excel.fesod.pojo;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.apache.fesod.sheet.annotation.ExcelIgnore;
 import org.apache.fesod.sheet.annotation.ExcelProperty;
 
@@ -15,9 +13,7 @@ import java.util.Date;
  * @Date 2026/6/4 16:09
  */
 
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class DemoData {
     @ExcelProperty("字符串标题")
     private String string;
