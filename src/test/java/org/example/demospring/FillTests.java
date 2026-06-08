@@ -4,6 +4,7 @@ import org.apache.fesod.common.util.ListUtils;
 import org.apache.fesod.sheet.ExcelWriter;
 import org.apache.fesod.sheet.FesodSheet;
 import org.apache.fesod.sheet.write.metadata.WriteSheet;
+import org.apache.fesod.sheet.write.metadata.fill.FillConfig;
 import org.example.demospring.excel.fesod.pojo.FillData;
 import org.example.demospring.excel.fesod.pojo.TemplateData;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,5 +108,28 @@ class FillTests {
             excelWriter.fill(data(), sheet);
         }
     }
+
+    @Test
+    public void complexFill() {
+        String templateFilePath = "template/demoTemplate.xlsx";
+
+        try (ExcelWriter writer = FesodSheet.write("complexFill.xlsx")
+                .withTemplate(getTemplateInputStream(templateFilePath))
+                .build()) {
+            WriteSheet sheet = FesodSheet.writerSheet().build();
+
+            FillConfig config = FillConfig.builder().forceNewRow(true).build();
+
+            writer.fill(data(), config, sheet);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", new Date());
+            map.put("total", 1000);
+            writer.fill(map, sheet);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
