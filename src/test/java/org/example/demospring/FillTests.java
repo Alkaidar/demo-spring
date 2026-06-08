@@ -12,10 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.example.demospring.excel.fesod.utils.Util.getTemplateInputStream;
@@ -126,6 +123,39 @@ class FillTests {
             map.put("date", new Date());
             map.put("total", 1000);
             writer.fill(map, sheet);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * @Description 这个大数据量填充，可能意思是生成新行填充的话大数据量情况下很慢
+     * 这种是直接全部覆盖填充完之后填写统计行
+     * @Author wangzhipeng
+     * @Date 2026/6/8 10:34
+     */
+    @Test
+    public void complexFillWithTable() {
+        String templateFilePath = "template/demoTemplate.xlsx";
+
+        try (ExcelWriter writer = FesodSheet.write("complexFillWithTable.xlsx")
+                .withTemplate(getTemplateInputStream(templateFilePath))
+                .build()) {
+            WriteSheet writeSheet = FesodSheet.writerSheet().build();
+
+            // 填充列表数据
+            writer.fill(data(), writeSheet);
+
+            // 填充其他变量
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", "2024年11月20日");
+            writer.fill(map, writeSheet);
+
+            // 填充统计信息
+            List<List<String>> totalList = new ArrayList<>();
+            totalList.add(Arrays.asList(null, null, null, "统计: 1000"));
+            writer.write(totalList, writeSheet);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
