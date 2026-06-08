@@ -12,6 +12,8 @@ import org.apache.fesod.sheet.metadata.data.WriteCellData;
  */
 @Data
 public class TemplateData {
+    @ExcelProperty("name")
+    private String name;
     @ExcelProperty("chinese")
     private Double chinese;
     @ExcelProperty("math")

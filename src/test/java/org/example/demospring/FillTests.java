@@ -1,7 +1,9 @@
 package org.example.demospring;
 
 import org.apache.fesod.common.util.ListUtils;
+import org.apache.fesod.sheet.ExcelWriter;
 import org.apache.fesod.sheet.FesodSheet;
+import org.apache.fesod.sheet.write.metadata.WriteSheet;
 import org.example.demospring.excel.fesod.pojo.FillData;
 import org.example.demospring.excel.fesod.pojo.TemplateData;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,8 @@ class FillTests {
             // double math = ThreadLocalRandom.current().nextDouble(60.0, 100.0);
             // double english = ThreadLocalRandom.current().nextDouble(60.0, 100.0);
 
+            String name = "zhangsan" + i;
+
             double chinese = BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble(60.0, 100.0))
                     .setScale(2, RoundingMode.HALF_UP)
                     .doubleValue();
@@ -38,6 +42,7 @@ class FillTests {
             double english = BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble(60.0, 100.0))
                     .setScale(2, RoundingMode.HALF_UP)
                     .doubleValue();
+            data.setName(name);
             data.setChinese(chinese);
             data.setMath(math);
             data.setEnglish(english);
@@ -80,6 +85,26 @@ class FillTests {
                 .withTemplate(getTemplateInputStream(templateFilePath))
                 .sheet()
                 .doFill(map);
+    }
+
+    @Test
+    public void listFill() throws Exception {
+        String templateFilePath = "template/demoTemplate.xlsx";
+
+        // 方案1：一次性填充所有数据
+        FesodSheet.write("listFill.xlsx")
+                .withTemplate(getTemplateInputStream(templateFilePath))
+                .sheet()
+                .doFill(data());
+
+        // 方案2：分批填充
+        try (ExcelWriter excelWriter = FesodSheet.write("listFillBatch.xlsx")
+                .withTemplate(getTemplateInputStream(templateFilePath))
+                .build()) {
+            WriteSheet sheet = FesodSheet.writerSheet().build();
+            excelWriter.fill(data(), sheet);
+            excelWriter.fill(data(), sheet);
+        }
     }
 
 }
