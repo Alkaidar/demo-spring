@@ -5,14 +5,14 @@ import org.apache.fesod.sheet.FesodSheet;
 import org.example.demospring.excel.fesod.pojo.TemplateData;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static org.example.demospring.excel.fesod.utils.Util.getTemplateInputStream;
 
 @SpringBootTest
 class TemplateTests {
@@ -65,7 +65,9 @@ class TemplateTests {
     public void delimiterDemo() throws Exception {
         String file = "demoTemplate" + System.currentTimeMillis() + ".xlsx";
 
-        InputStream templateInputStream = getTemplateInputStream();
+        String templateFilePath = "template/demoTemplate.xlsx";
+
+        InputStream templateInputStream = getTemplateInputStream(templateFilePath);
 
         FesodSheet.write(file)
                 .withTemplate(templateInputStream)
@@ -73,15 +75,5 @@ class TemplateTests {
                 .doFill(data());
     }
 
-    private static InputStream getTemplateInputStream() throws IOException {
-        String templateFilePath = "template/demoTemplate.xlsx";
-        ClassPathResource resource = new ClassPathResource(templateFilePath);
-
-        if (!resource.exists()) {
-            throw new RuntimeException("模板文件不存在：" + templateFilePath);
-        }
-
-        return resource.getInputStream();
-    }
 
 }

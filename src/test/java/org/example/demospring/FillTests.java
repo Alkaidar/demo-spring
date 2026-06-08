@@ -6,15 +6,15 @@ import org.example.demospring.excel.fesod.pojo.FillData;
 import org.example.demospring.excel.fesod.pojo.TemplateData;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static org.example.demospring.excel.fesod.utils.Util.getTemplateInputStream;
 
 @SpringBootTest
 class FillTests {
@@ -79,16 +79,6 @@ class FillTests {
                 .withTemplate(getTemplateInputStream(templateFilePath))
                 .sheet()
                 .doFill(map);
-    }
-
-    private static InputStream getTemplateInputStream(String templateFilePath) throws Exception {
-        ClassPathResource resource = new ClassPathResource(templateFilePath);
-
-        if (!resource.exists()) {
-            throw new RuntimeException("模板文件不存在");
-        }
-
-        return resource.getInputStream();
     }
 
 }
