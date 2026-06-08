@@ -21,5 +21,8 @@ public class TemplateData {
     @ExcelProperty("english")
     private Double english;
 
+    @ExcelProperty("number")
+    private Double number;
+
     private WriteCellData<String> sum;
 }

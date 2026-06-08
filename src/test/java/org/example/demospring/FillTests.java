@@ -3,6 +3,7 @@ package org.example.demospring;
 import org.apache.fesod.common.util.ListUtils;
 import org.apache.fesod.sheet.ExcelWriter;
 import org.apache.fesod.sheet.FesodSheet;
+import org.apache.fesod.sheet.enums.WriteDirectionEnum;
 import org.apache.fesod.sheet.write.metadata.WriteSheet;
 import org.apache.fesod.sheet.write.metadata.fill.FillConfig;
 import org.example.demospring.excel.fesod.pojo.FillData;
@@ -41,10 +42,16 @@ class FillTests {
             double english = BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble(60.0, 100.0))
                     .setScale(2, RoundingMode.HALF_UP)
                     .doubleValue();
+
+            double number = BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble(60.0, 100.0))
+                    .setScale(2, RoundingMode.HALF_UP)
+                    .doubleValue();
+
             data.setName(name);
             data.setChinese(chinese);
             data.setMath(math);
             data.setEnglish(english);
+            data.setNumber(number);
 
             // Excel公式 TODO 如果需要每行写公式，那么就得动态生成，不能写死
             // WriteCellData<String> cellData = new WriteCellData<>();
@@ -156,6 +163,30 @@ class FillTests {
             List<List<String>> totalList = new ArrayList<>();
             totalList.add(Arrays.asList(null, null, null, "统计: 1000"));
             writer.write(totalList, writeSheet);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void horizontalFill() {
+        String templateFilePath = "template/horizontalTemplate.xlsx";
+
+        try (ExcelWriter writer = FesodSheet.write("horizontalFill.xlsx")
+                .withTemplate(getTemplateInputStream(templateFilePath))
+                .build()) {
+            WriteSheet writeSheet = FesodSheet.writerSheet().build();
+
+            FillConfig config = FillConfig.builder().direction(WriteDirectionEnum.HORIZONTAL).build();
+
+            // 填充列表数据
+            writer.fill(data(), config, writeSheet);
+
+            // 填充其他变量
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", new Date());
+            writer.fill(map, writeSheet);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
