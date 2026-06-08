@@ -63,7 +63,7 @@ class FillTests {
 
         String templateFilePath = "template/simpleTemplate.xlsx";
 
-
+        // 方案1：基于对象填充
         FillData fillData = new FillData();
         fillData.setName("张三");
         fillData.setNumber(5.2);
@@ -72,6 +72,7 @@ class FillTests {
                 .sheet()
                 .doFill(fillData);
 
+        // 方案2：基于 Map 填充
         Map<String, Object> map = new HashMap<>();
         map.put("name", "zhangsan");
         map.put("number", 5.2);
