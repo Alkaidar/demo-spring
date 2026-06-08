@@ -29,7 +29,7 @@ class CSVTests {
 
     @Test
     public void delimiterDemo() {
-        String csvFile = "demo" + System.currentTimeMillis() + ".csv";
+        String csvFile = "demoCSV" + System.currentTimeMillis() + ".csv";
         FesodSheet.write(csvFile, DemoData.class)
                 .csv()
                 .delimiter(CsvConstant.UNICODE_EMPTY)
@@ -39,7 +39,7 @@ class CSVTests {
 
     @Test
     public void quoteDemo() {
-        String csvFile = "demo" + System.currentTimeMillis() + ".csv";
+        String csvFile = "demoCSV" + System.currentTimeMillis() + ".csv";
 
         // TODO 这也没包裹字段啊
         FesodSheet.write(csvFile, DemoData.class)
@@ -51,7 +51,7 @@ class CSVTests {
 
     @Test
     public void recordSeparatorDemo() {
-        String csvFile = "demo" + System.currentTimeMillis() + ".csv";
+        String csvFile = "demoCSV" + System.currentTimeMillis() + ".csv";
         FesodSheet.write(csvFile, DemoData.class)
                 .csv()
                 .recordSeparator(CsvConstant.LF)
