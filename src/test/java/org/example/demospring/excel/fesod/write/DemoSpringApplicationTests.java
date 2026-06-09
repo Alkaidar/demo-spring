@@ -6,6 +6,8 @@ import org.apache.fesod.sheet.FesodSheet;
 import org.apache.fesod.sheet.write.merge.LoopMergeStrategy;
 import org.apache.fesod.sheet.write.metadata.WriteSheet;
 import org.apache.fesod.sheet.write.metadata.WriteTable;
+import org.apache.fesod.sheet.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import org.example.demospring.excel.fesod.CustomCellWriteWidthStyleStrategy;
 import org.example.demospring.excel.fesod.CustomMergeStrategy;
 import org.example.demospring.excel.fesod.CustomStringStringConverter;
 import org.example.demospring.excel.fesod.pojo.DemoData;
@@ -26,7 +28,7 @@ class DemoSpringApplicationTests {
         List<DemoData> list = ListUtils.newArrayList();
         for (int i = 0; i < 10; i++) {
             DemoData data = new DemoData();
-            data.setString("String" + i);
+            data.setString("String1111111111111111111111111" + i);
             data.setDate(new Date());
             data.setDoubleData(0.56);
             list.add(data);
@@ -40,6 +42,37 @@ class DemoSpringApplicationTests {
         String fileName = "simpleWrite" + System.currentTimeMillis() + ".xlsx";
 
         FesodSheet.write(fileName, DemoData.class)
+                .sheet("Sheet1")
+                .doWrite(data());
+    }
+
+    /**
+     * @Description 自适应列宽
+     * @Author wangzhipeng
+     * @Date 2026/6/9 11:00
+     */
+    @Test
+    public void simpleWrite2() {
+        String fileName = "simpleWrite" + System.currentTimeMillis() + ".xlsx";
+
+        FesodSheet.write(fileName, DemoData.class)
+                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
+                .sheet("Sheet1")
+                .doWrite(data());
+    }
+
+    /**
+     * @Description 自适应列宽 自定义的更美观一些
+     * 不过这两种方式对date好像都不生效，对字符串是完全没问题的
+     * @Author wangzhipeng
+     * @Date 2026/6/9 11:00
+     */
+    @Test
+    public void simpleWrite3() {
+        String fileName = "simpleWrite" + System.currentTimeMillis() + ".xlsx";
+
+        FesodSheet.write(fileName, DemoData.class)
+                .registerWriteHandler(new CustomCellWriteWidthStyleStrategy())
                 .sheet("Sheet1")
                 .doWrite(data());
     }
